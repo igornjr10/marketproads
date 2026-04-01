@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfoSaaS — Vitor Hugo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #FF4D00;
+  --orange2: #FF6B2B;
+  --black: #060606;
+  --black2: #0F0F0F;
+  --black3: #181818;
+  --black4: #222222;
+  --white: #F5F0EB;
+  --muted: #5A5652;
+  --border: rgba(255,77,0,0.12);
+  --border2: rgba(255,255,255,0.06);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 56px;
+  border-bottom: 1px solid var(--border2);
+  position: sticky;
+  top: 0;
+  background: rgba(6,6,6,0.95);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.06em;
+  color: var(--orange);
+  line-height: 1;
+}
+.nav-center {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.nav-right {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-right::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* HERO */
+.hero {
+  min-height: 94vh;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 56px;
+  align-items: center;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,77,0,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-left { padding-right: 60px; }
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.1s forwards;
+}
+.hero-label span { display: block; width: 32px; height: 1px; background: var(--orange); }
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 9vw, 130px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.2s forwards;
+}
+h1 em { font-style: normal; color: var(--orange); display: block; }
+
+.hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 480px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.35s forwards;
+}
+.hero-sub strong { color: var(--white); font-weight: 500; }
+
+.hero-right {
+  border-left: 1px solid var(--border2);
+  padding-left: 56px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.45s forwards;
+}
+.stat-block {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border2);
+}
+.stat-block:last-child { border-bottom: none; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; line-height: 1.5; }
+
+/* TICKER */
+.ticker {
+  border-top: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
+  overflow: hidden;
+  padding: 13px 0;
+  background: var(--black2);
+}
+.ticker-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+.ticker-item {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 36px;
+  flex-shrink: 0;
+}
+.ticker-item b { color: var(--orange); font-weight: 400; margin-right: 36px; }
+
+/* SECTIONS */
+.section {
+  padding: 108px 56px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-tag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--orange); }
+
+h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 6.5vw, 88px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+h2 em { font-style: normal; color: var(--orange); }
+
+.lead {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.75;
+}
+.lead strong { color: var(--white); font-weight: 500; }
+
+.divider { height: 1px; background: var(--border2); max-width: 1200px; margin: 0 auto; }
+
+/* TRANSFORMAÇÃO */
+.transform-wrap {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr;
+  gap: 0;
+  margin-top: 72px;
+  align-items: start;
+}
+.t-col { border: 1px solid var(--border2); border-radius: 2px; }
+.t-col.right { border-color: var(--orange); }
+.t-head {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border2);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.t-head.bad { color: #4A3030; }
+.t-head.good { color: var(--orange); background: rgba(255,77,0,0.04); border-color: rgba(255,77,0,0.15); }
+.t-row {
+  padding: 18px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.t-row:last-child { border-bottom: none; }
+.t-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 8px; flex-shrink: 0; }
+.t-dot.bad { background: #3D2020; }
+.t-dot.good { background: var(--orange); }
+.t-text { color: var(--muted); line-height: 1.55; }
+.t-text strong { color: var(--white); font-weight: 500; display: block; font-size: 13px; margin-bottom: 2px; }
+.arrow-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 72px;
+}
+.arrow-mid svg { color: var(--orange); opacity: 0.5; }
+
+/* DARK SECTION */
+.dark-section {
+  background: var(--black2);
+  border-top: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
+}
+
+/* FEATURES */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 72px;
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.feat {
+  padding: 36px 32px;
+  border-right: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
+  transition: background 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.feat:nth-child(3n) { border-right: none; }
+.feat:nth-child(n+4) { border-bottom: none; }
+.feat:hover { background: rgba(255,77,0,0.04); }
+.feat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--orange);
+  transition: width 0.3s ease;
+}
+.feat:hover::before { width: 100%; }
+.feat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: rgba(255,77,0,0.15);
+  line-height: 1;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+.feat-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+.feat-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* EXEMPLOS */
+.ex-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 72px;
+  background: var(--border2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ex-card { background: var(--black); }
+.ex-head {
+  padding: 22px 32px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border-bottom: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ex-head::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+.ex-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 14px;
+  color: var(--muted);
+  transition: background 0.15s;
+}
+.ex-row:last-child { border-bottom: none; }
+.ex-row:hover { background: rgba(255,255,255,0.02); }
+.ex-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  color: rgba(255,77,0,0.35);
+  min-width: 22px;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+/* FRASE LARANJA */
+.quote-section { background: var(--orange); padding: 100px 56px; }
+.quote-inner { max-width: 1200px; margin: 0 auto; }
+.big-q {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 5.5vw, 80px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--black);
+}
+.big-q em { font-style: normal; color: rgba(0,0,0,0.32); }
+
+/* FINANCEIRO */
+.fin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 72px;
+  background: var(--border2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fin-card { background: var(--black); padding: 48px; }
+.fin-card.active { background: rgba(255,77,0,0.05); }
+.fin-tag { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.fin-tag.orange { color: var(--orange); }
+.fin-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.fin-num.orange { color: var(--orange); }
+.fin-period { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+.fin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+}
+.fin-row:last-child { border-bottom: none; }
+.fin-row-label { color: var(--muted); }
+.fin-row-val { color: var(--white); font-weight: 500; }
+.fin-row-val.orange { color: var(--orange); }
+
+/* COFUNDADOR */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 72px;
+}
+.role {
+  background: var(--black);
+  padding: 40px;
+  transition: background 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.role::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 0;
+  background: rgba(255,77,0,0.06);
+  transition: height 0.3s ease;
+}
+.role:hover::after { height: 100%; }
+.role-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: rgba(255,77,0,0.12);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: 0.02em;
+}
+.role-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 10px; position: relative; z-index: 1; }
+.role-desc { font-size: 13px; color: var(--muted); line-height: 1.65; position: relative; z-index: 1; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border2);
+  padding: 36px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  color: var(--orange);
+}
+.footer-right { font-size: 12px; color: var(--muted); text-align: right; line-height: 1.7; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 18px 24px; }
+  .hero { grid-template-columns: 1fr; padding: 60px 24px 80px; min-height: auto; gap: 48px; }
+  .hero-left { padding-right: 0; }
+  .hero-right { border-left: none; border-top: 1px solid var(--border2); padding-left: 0; padding-top: 40px; display: grid; grid-template-columns: repeat(3,1fr); }
+  .stat-block { border-bottom: none; border-right: 1px solid var(--border2); padding: 24px 20px; }
+  .stat-block:last-child { border-right: none; }
+  .section { padding: 72px 24px; }
+  .transform-wrap { grid-template-columns: 1fr; }
+  .arrow-mid { display: none; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .feat:nth-child(3n) { border-right: 1px solid var(--border2); }
+  .feat:nth-child(2n) { border-right: none; }
+  .feat:nth-child(n+5) { border-bottom: none; }
+  .ex-grid { grid-template-columns: 1fr; }
+  .fin-grid { grid-template-columns: 1fr; }
+  .roles-grid { grid-template-columns: 1fr; }
+  .quote-section { padding: 72px 24px; }
+  footer { padding: 28px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  .footer-right { text-align: center; }
+  .nav-center { display: none; }
+}
+@media (max-width: 480px) {
+  h1 { font-size: 64px; }
+  h2 { font-size: 52px; }
+  .hero-right { grid-template-columns: 1fr; }
+  .stat-block { border-right: none; border-bottom: 1px solid var(--border2); }
+  .features-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">InfoSaaS</div>
+  <div class="nav-center">Vitor Hugo × Cofundador</div>
+  <div class="nav-right">Proposta ativa</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-label"><span></span>Uma nova categoria de produto</div>
+    <h1>CONHE<em>CIMENTO</em>QUE ESCALA.</h1>
+    <p class="hero-sub">A imersão ensina. O InfoSaaS faz o aluno <strong>aplicar</strong>. Em vez de vender informação uma vez, você vende um sistema que ele usa <strong>todos os dias</strong>.</p>
+  </div>
+  <div class="hero-right">
+    <div class="stat-block">
+      <div class="stat-num">R$147</div>
+      <div class="stat-label">por aluno<br>por mês</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">×100</div>
+      <div class="stat-label">alunos<br>ativos</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">14.7K</div>
+      <div class="stat-label">todo mês<br>recorrente</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><b>→</b>Receita recorrente</span>
+    <span class="ticker-item"><b>→</b>Aluno aplica, não só aprende</span>
+    <span class="ticker-item"><b>→</b>Escala sem depender do seu tempo</span>
+    <span class="ticker-item"><b>→</b>Templates · Scripts · Playbooks</span>
+    <span class="ticker-item"><b>→</b>Cofundador, não freela</span>
+    <span class="ticker-item"><b>→</b>Conteúdo vira produto vivo</span>
+    <span class="ticker-item"><b>→</b>Receita recorrente</span>
+    <span class="ticker-item"><b>→</b>Aluno aplica, não só aprende</span>
+    <span class="ticker-item"><b>→</b>Escala sem depender do seu tempo</span>
+    <span class="ticker-item"><b>→</b>Templates · Scripts · Playbooks</span>
+    <span class="ticker-item"><b>→</b>Cofundador, não freela</span>
+    <span class="ticker-item"><b>→</b>Conteúdo vira produto vivo</span>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section class="section" id="modelo">
+  <div class="section-tag">O problema atual</div>
+  <h2>TODA VEZ QUE<br>VOCÊ PARA,<br>A RECEITA <em>CAI.</em></h2>
+  <p class="lead reveal">Você tem um ativo que a maioria desperdiça: conhecimento que gera resultado. O problema não é o conteúdo — é o modelo. <strong>Isso tem teto.</strong></p>
+
+  <div class="transform-wrap reveal">
+    <div class="t-col left">
+      <div class="t-head bad">Modelo atual</div>
+      <div class="t-row"><div class="t-dot bad"></div><div class="t-text"><strong>Lançamentos e imersões</strong>Receita aparece, depois some.</div></div>
+      <div class="t-row"><div class="t-dot bad"></div><div class="t-text"><strong>Alta dependência do tempo</strong>Se você para, a receita para junto.</div></div>
+      <div class="t-row"><div class="t-dot bad"></div><div class="t-text"><strong>Aluno aprende, mas não aplica</strong>Resultado baixo, churn alto.</div></div>
+      <div class="t-row"><div class="t-dot bad"></div><div class="t-text"><strong>Pagamento único</strong>Sem previsibilidade de receita.</div></div>
+    </div>
+    <div class="arrow-mid">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+    <div class="t-col right">
+      <div class="t-head good">InfoSaaS</div>
+      <div class="t-row"><div class="t-dot good"></div><div class="t-text"><strong>Produto recorrente</strong>Receita todo mês, com ou sem lançamento.</div></div>
+      <div class="t-row"><div class="t-dot good"></div><div class="t-text"><strong>Plataforma que trabalha por você</strong>Escala sem depender do seu tempo.</div></div>
+      <div class="t-row"><div class="t-dot good"></div><div class="t-text"><strong>Aluno executa dentro do produto</strong>Resultado real, retenção alta.</div></div>
+      <div class="t-row"><div class="t-dot good"></div><div class="t-text"><strong>Assinatura mensal</strong>Previsibilidade e crescimento composto.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PLATAFORMA -->
+<section class="dark-section">
+  <div class="section" id="plataforma">
+    <div class="section-tag">A plataforma</div>
+    <h2>O ALUNO NÃO<br>COMPRA CONTEÚDO.<br>ELE COMPRA UMA <em>FERRAMENTA.</em></h2>
+    <p class="lead reveal">Uma plataforma onde aprender e aplicar acontecem no mesmo lugar.</p>
+
+    <div class="features-grid reveal">
+      <div class="feat"><div class="feat-num">01</div><div class="feat-title">Módulos e Playbooks</div><div class="feat-desc">Conteúdo da imersão em guias objetivos com resumos e próximos passos claros.</div></div>
+      <div class="feat"><div class="feat-num">02</div><div class="feat-title">Desafios Semanais</div><div class="feat-desc">Metas e exercícios práticos que mantêm o aluno em movimento semana após semana.</div></div>
+      <div class="feat"><div class="feat-num">03</div><div class="feat-title">Templates e Scripts</div><div class="feat-desc">Scripts de prospecção, WhatsApp, follow-ups e modelos de copy prontos para usar.</div></div>
+      <div class="feat"><div class="feat-num">04</div><div class="feat-title">Checklists e Rotinas</div><div class="feat-desc">Rotinas diárias de execução. O aluno sabe exatamente o que fazer ao abrir a plataforma.</div></div>
+      <div class="feat"><div class="feat-num">05</div><div class="feat-title">Acompanhamento</div><div class="feat-desc">Dashboard de metas e evolução. O aluno vê seu avanço e tem motivo para continuar.</div></div>
+      <div class="feat"><div class="feat-num">06</div><div class="feat-title">IA do Próximo Passo</div><div class="feat-desc">Sistema que guia o aluno para o que fazer em seguida com base no progresso dele.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXEMPLOS -->
+<section class="section">
+  <div class="section-tag">Na prática</div>
+  <h2>CONHECIMENTO<br>QUE VIRA <em>EXECUÇÃO.</em></h2>
+  <div class="ex-grid reveal">
+    <div class="ex-card">
+      <div class="ex-head">Módulo: Prospecção</div>
+      <div class="ex-row"><div class="ex-n">01</div><div>Aluno assiste à aula sobre como prospectar</div></div>
+      <div class="ex-row"><div class="ex-n">02</div><div>Gera script de ligação personalizado na ferramenta</div></div>
+      <div class="ex-row"><div class="ex-n">03</div><div>Recebe mensagem de WhatsApp + follow-up prontos</div></div>
+      <div class="ex-row"><div class="ex-n">04</div><div>Define metas de contatos com acompanhamento diário</div></div>
+      <div class="ex-row"><div class="ex-n">05</div><div>Segue a rotina gerada automaticamente pela plataforma</div></div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-head">Módulo: Conteúdo</div>
+      <div class="ex-row"><div class="ex-n">01</div><div>Aluno aprende sobre estratégia de conteúdo</div></div>
+      <div class="ex-row"><div class="ex-n">02</div><div>Recebe calendário de posts de 30 dias pronto</div></div>
+      <div class="ex-row"><div class="ex-n">03</div><div>Acessa modelos de copy para cada tipo de post</div></div>
+      <div class="ex-row"><div class="ex-n">04</div><div>Gera ideias de conteúdo com base no seu nicho</div></div>
+      <div class="ex-row"><div class="ex-n">05</div><div>Checklists garantem qualidade antes de publicar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FRASE CENTRAL -->
+<section class="quote-section">
+  <div class="quote-inner">
+    <div class="big-q reveal">
+      "HOJE VOCÊ VENDE<br><em>CONHECIMENTO.</em><br>COM O INFOSAAS,<br>VOCÊ TRANSFORMA<br>SEU CONHECIMENTO<br>EM UMA FERRAMENTA<br>QUE O ALUNO USA<br><em>TODOS OS DIAS."</em>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCEIRO -->
+<section class="section" id="financeiro">
+  <div class="section-tag">Os números</div>
+  <h2>RECEITA QUE NÃO<br>DEPENDE DO PRÓXIMO<br><em>LANÇAMENTO.</em></h2>
+  <p class="lead reveal">Com 100 alunos em assinatura, você tem mais previsibilidade do que qualquer lançamento isolado. E os números crescem juntos.</p>
+
+  <div class="fin-grid reveal">
+    <div class="fin-card">
+      <div class="fin-tag">Imersão tradicional</div>
+      <div class="fin-num">R$997</div>
+      <div class="fin-period">por aluno · pagamento único</div>
+      <div class="fin-row"><span class="fin-row-label">100 alunos</span><span class="fin-row-val">R$99.700 one-time</span></div>
+      <div class="fin-row"><span class="fin-row-label">Próximo mês</span><span class="fin-row-val">Outro lançamento</span></div>
+      <div class="fin-row"><span class="fin-row-label">Crescimento</span><span class="fin-row-val">Depende de você</span></div>
+      <div class="fin-row"><span class="fin-row-label">Previsibilidade</span><span class="fin-row-val">Quase nenhuma</span></div>
+    </div>
+    <div class="fin-card active">
+      <div class="fin-tag orange">InfoSaaS</div>
+      <div class="fin-num orange">R$147</div>
+      <div class="fin-period">por aluno · por mês · recorrente</div>
+      <div class="fin-row"><span class="fin-row-label">100 alunos</span><span class="fin-row-val orange">R$14.700/mês</span></div>
+      <div class="fin-row"><span class="fin-row-label">12 meses</span><span class="fin-row-val orange">R$176.400/ano</span></div>
+      <div class="fin-row"><span class="fin-row-label">Crescimento</span><span class="fin-row-val">Composto todo mês</span></div>
+      <div class="fin-row"><span class="fin-row-label">Imersão</span><span class="fin-row-val">Continua como funil</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COFUNDADOR -->
+<section class="dark-section">
+  <div class="section" id="cofundador">
+    <div class="section-tag">Meu papel</div>
+    <h2>COFUNDADOR,<br>NÃO <em>PRESTADOR</em><br>DE SERVIÇO.</h2>
+    <p class="lead reveal">Não entro para ajudar. Entro para <strong>construir junto</strong>. Responsável por transformar o que você ensina em um produto que escala.</p>
+
+    <div class="roles-grid reveal">
+      <div class="role"><div class="role-n">01</div><div class="role-title">Estrutura do produto</div><div class="role-desc">Transformo o conteúdo da imersão em módulos, playbooks e ferramentas práticas com lógica de execução real.</div></div>
+      <div class="role"><div class="role-n">02</div><div class="role-title">Experiência do aluno</div><div class="role-desc">Desenho a jornada desde o primeiro acesso até o resultado. Ativação, engajamento e retenção no centro.</div></div>
+      <div class="role"><div class="role-n">03</div><div class="role-title">Automações e templates</div><div class="role-desc">Crio os sistemas que fazem a plataforma funcionar sem depender do seu tempo a cada interação.</div></div>
+      <div class="role"><div class="role-n">04</div><div class="role-title">Crescimento do projeto</div><div class="role-desc">Participo como cofundador. Equity ou revenue share — não como quem entrega e desaparece.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">INFOSAAS</div>
+  <div class="footer-right">
+    Proposta de cofundador · Vitor Hugo<br>
+    <span style="color:var(--orange)">Construído para escalar.</span>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
